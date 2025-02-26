@@ -31,19 +31,19 @@ conversion_type = st.selectbox("Select Conversion Type", ["Length", "Weight", "V
 # Conversion function
 def converter(value, from_unit, to_unit):
     # Length
-    if conversion_type is 'Length':
+    if conversion_type == 'Length':
         return value * (length_units[from_unit] / length_units[to_unit])
     # Weight
-    elif conversion_type is 'Weight':
+    elif conversion_type == 'Weight':
         return value * (weight_units[from_unit] / weight_units[to_unit])
     # Volume
-    elif conversion_type is 'Volume':
+    elif conversion_type == 'Volume':
         return value * (volume_units[from_unit] / volume_units[to_unit])
     # Time
-    elif conversion_type is 'Time':
+    elif conversion_type == 'Time':
         return value * (time_units[from_unit] / time_units[to_unit])
     # Temperature
-    elif conversion_type is 'Temperature':
+    elif conversion_type == 'Temperature':
         if from_unit == "Celsius (°C)" and to_unit == "Fahrenheit (°F)":
             return (value * 9/5) + 32
         elif from_unit == "Fahrenheit (°F)" and to_unit == "Celsius (°C)":
