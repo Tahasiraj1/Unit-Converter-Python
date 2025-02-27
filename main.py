@@ -1,4 +1,17 @@
+import os
 import streamlit as st
+import google.generativeai as genai
+from dotenv import load_dotenv
+
+load_dotenv()
+
+api_key = os.getenv("API_KEY")
+
+# Configure API Key
+genai.configure(api_key=api_key)
+
+# Initialize Gemini Model
+model = genai.GenerativeModel("gemini-1.5-pro-latest")
 
 length_units: dict = {
     "Kilometer (km)": 1000, "Meter (m)": 1, "Centimeter (cm)": 0.01,
@@ -23,7 +36,15 @@ time_units: dict = {
 }
 
 
-st.title("🌟 Unit Converter")
+# Function to get AI-generated explanation
+def get_ai_explanation(from_unit, to_unit):
+    """ Uses Gemini AI to generate an explanation of the conversion process. """
+    prompt = f"Explain how the conversion from {from_unit} to {to_unit} works in simple terms."
+    response = model.generate_content(prompt)
+    return response.text
+
+
+st.title("🌟 AI-Powered Unit Converter")
 
 # Conversion Type Selection
 conversion_type = st.selectbox("Select Conversion Type", ["Length", "Weight", "Volume", "Temperature", "Time"], index=None)
@@ -82,6 +103,8 @@ if conversion_type:
     # Conversion Logic
     if st.button("Convert"):
         result = converter(value, from_unit, to_unit)
+        explanation = get_ai_explanation(from_unit, to_unit)  # AI explanation
         
         st.success(f"✅ Result: {result} {to_unit}")
-
+        with st.expander("🤖 How does this conversion work?"):
+            st.write(explanation)
